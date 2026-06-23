@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <string.h>
+
+const char* determine_color(const char* s) {
+    // Calculate the sum of the column and row characters
+    int sum = s[0] + s[1];
+    
+    // If the sum is even, it's Black; if odd, it's White
+    if (sum % 2 == 0) {
+        return "Black";
+    } else {
+        return "White";
+    }
+}
+
+int main() {
+    char s[256];
+    if (scanf("%255s", s) == 1) {
+        const char* result = determine_color(s);
+        printf("%s\n", result);
+    }
+    return 0;
+}
