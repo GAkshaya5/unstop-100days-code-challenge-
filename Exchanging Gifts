@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <string.h>
+
+void find_youngest_member(int n, int m, int gifts[][2]) {
+    // Array to track how many gifts a person gave
+    int out_degree[n + 1]; 
+    // Array to track how many gifts a person received
+    int in_degree[n + 1];  
+    
+    // Initialize both arrays with 0
+    memset(out_degree, 0, sizeof(out_degree));
+    memset(in_degree, 0, sizeof(in_degree));
+    
+    // Process each gift exchange
+    for (int i = 0; i < m; i++) {
+        int giver = gifts[i][0];
+        int receiver = gifts[i][1];
+        
+        out_degree[giver]++;
+        in_degree[receiver]++;
+    }
+    
+    // Find the member who gave 0 gifts and received (n - 1) gifts
+    for (int i = 1; i <= n; i++) {
+        if (in_degree[i] == n - 1 && out_degree[i] == 0) {
+            printf("%d\n", i);
+            return;
+        }
+    }
+    
+    // If no such member exists
+    printf("-1\n");
+}
+
+int main() {
+    int n, m;
+    if (scanf("%d %d", &n, &m) != 2) return 0;
+    
+    int gifts[m][2];
+    for (int i = 0; i < m; i++) {
+        scanf("%d %d", &gifts[i][0], &gifts[i][1]);
+    }
+    
+    find_youngest_member(n, m, gifts);
+    return 0;
+}
