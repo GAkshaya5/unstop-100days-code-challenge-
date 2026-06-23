@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int main() {
+    int n;
+    if (scanf("%d", &n) != 1) return 0;
+
+    // Allocate memory for N strings, each up to 1000 characters long (+1 for null terminator)
+    char arr[1000][1005];
+    for (int i = 0; i < n; i++) {
+        scanf("%s", arr[i]);
+    }
+
+    int k;
+    if (scanf("%d", &k) != 1) return 0;
+
+    int unique_count = 0;
+    char *result = NULL;
+
+    // Iterate through the strings in their original insertion order
+    for (int i = 0; i < n; i++) {
+        int count = 0;
+        
+        // Count how many times arr[i] appears in the entire list
+        for (int j = 0; j < n; j++) {
+            if (strcmp(arr[i], arr[j]) == 0) {
+                count++;
+            }
+        }
+
+        // If it appears exactly once, it is a unique string
+        if (count == 1) {
+            unique_count++;
+            if (unique_count == k) {
+                result = arr[i];
+                break;
+            }
+        }
+    }
+
+    // Output the result
+    if (result != NULL) {
+        printf("%s\n", result);
+    } else {
+        printf("-1\n");
+    }
+
+    return 0;
+}
