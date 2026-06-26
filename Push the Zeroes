@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+int main() {
+    int n;
+    // Read the size of the array
+    if (scanf("%d", &n) != 1) return 0;
+    
+    int *arr = (int *)malloc(n * sizeof(int));
+    if (arr == NULL) return 0;
+    
+    // Read the array elements
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+    
+    int count = 0; // Pointer to track the position of the next non-zero element
+    
+    // Step 1: Shift all non-zero elements forward
+    for (int i = 0; i < n; i++) {
+        if (arr[i] != 0) {
+            arr[count++] = arr[i];
+        }
+    }
+    
+    // Step 2: Fill the rest of the array with zeroes
+    while (count < n) {
+        arr[count++] = 0;
+    }
+    
+    // Step 3: Print the resultant array
+    for (int i = 0; i < n; i++) {
+        printf("%d", arr[i]);
+        if (i < n - 1) {
+            printf(" ");
+        }
+    }
+    printf("\n");
+    
+    // Free allocated memory
+    free(arr);
+    
+    return 0;
+}
