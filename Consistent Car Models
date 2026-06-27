@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int countConsistentCars(const char* components, int n, char** models) {
+    int allowed[256] = {0};
+    
+    // Mark all allowed components as 1
+    for (int i = 0; components[i] != '\0'; i++) {
+        allowed[(unsigned char)components[i]] = 1;
+    }
+    
+    int consistentCount = 0;
+    
+    // Check each car model
+    for (int i = 0; i < n; i++) {
+        int isConsistent = 1;
+        
+        for (int j = 0; models[i][j] != '\0'; j++) {
+            if (!allowed[(unsigned char)models[i][j]]) {
+                isConsistent = 0;
+                break;
+            }
+        }
+        
+        if (isConsistent) {
+            consistentCount++;
+        }
+    }
+    
+    return consistentCount;
+}
+
+int main() {
+    char components[100];
+    int n;
+
+    // Read the allowed components string
+    if (scanf("%s", components) != 1) return 0;
+    
+    // Read the number of car models
+    if (scanf("%d", &n) != 1) return 0;
+
+    // Allocate memory for the array of model strings
+    char** models = (char**)malloc(n * sizeof(char*));
+    for (int i = 0; i < n; i++) {
+        models[i] = (char*)malloc(105 * sizeof(char));
+        if (scanf("%s", models[i]) != 1) return 0;
+    }
+
+    // Calculate the result
+    int result = countConsistentCars(components, n, models);
+
+    // Print the output required by the testcase
+    printf("%d\n", result);
+
+    // Free allocated memory
+    for (int i = 0; i < n; i++) {
+        free(models[i]);
+    }
+    free(models);
+
+    return 0;
+}
