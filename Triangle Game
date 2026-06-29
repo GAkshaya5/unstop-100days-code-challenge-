@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+int main() {
+    int n;
+    if (scanf("%d", &n) != 1) {
+        return 0;
+    }
+    
+    long long prev = 1;
+    printf("%lld", prev);
+    
+    for (int i = 1; i <= n; i++) {
+        // Calculate the next element using the identity: 
+        // C(n, i) = C(n, i-1) * (n - i + 1) / i
+        long long curr = prev * (n - i + 1) / i;
+        printf(" %lld", curr);
+        prev = curr;
+    }
+    printf("\n");
+    
+    return 0;
+}
