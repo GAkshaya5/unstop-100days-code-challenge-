@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAXN 40005
+
+int left_child[MAXN];
+int right_child[MAXN];
+int max_diameter = 0;
+
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+
+// Function to calculate the height of each node and update the global max diameter
+int calculate_height(int node) {
+    if (node == -1) {
+        return 0;
+    }
+
+    int left_height = calculate_height(left_child[node]);
+    int right_height = calculate_height(right_child[node]);
+
+    // Update the maximum diameter found so far
+    if (left_height + right_height > max_diameter) {
+        max_diameter = left_height + right_height;
+    }
+
+    // Return the height of the current node
+    return 1 + max(left_height, right_height);
+}
+
+int main() {
+    int n;
+    if (scanf("%d", &n) != 1) return 0;
+
+    // Read the left and right children for each landmark from 1 to n
+    for (int i = 1; i <= n; i++) {
+        scanf("%d %d", &left_child[i], &right_child[i]);
+    }
+
+    // Start DFS from the root (vertex 1)
+    calculate_height(1);
+
+    // Print the final maximum length of the marathon
+    printf("%d\n", max_diameter);
+
+    return 0;
+}
