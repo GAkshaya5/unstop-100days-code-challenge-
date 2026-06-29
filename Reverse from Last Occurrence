@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <string.h>
+
+char* transform_string(char* s, char ch) {
+    // Find the last occurrence of the character ch
+    char* last_occ = strrchr(s, ch);
+    
+    // If the character is not found, return the original string
+    if (last_occ == NULL) {
+        return s;
+    }
+    
+    // Reverse the substring from last_occ to the end of the string
+    char* start = last_occ;
+    char* end = s + strlen(s) - 1; // Points to the last character
+    
+    while (start < end) {
+        char temp = *start;
+        *start = *end;
+        *end = temp;
+        
+        start++;
+        end--;
+    }
+    
+    return s;
+}
+
+int main() {
+    // Large buffer size to safely handle constraints up to 10^5
+    static char input[100005];
+    char ch;
+    
+    // Read the entire line up to the newline
+    if (fgets(input, sizeof(input), stdin) != NULL) {
+        // Remove trailing newline character if present
+        size_t len = strlen(input);
+        if (len > 0 && input[len - 1] == '\n') {
+            input[len - 1] = '\0';
+            len--;
+        }
+        
+        // The last character of the input line is 'ch', and before it is a space
+        if (len >= 3) {
+            ch = input[len - 1];      // Extract the target character
+            input[len - 2] = '\0';    // Null-terminate the string 's' to remove the space and 'ch'
+            
+            // Transform and print the result
+            printf("%s\n", transform_string(input, ch));
+        }
+    }
+    
+    return 0;
+}
