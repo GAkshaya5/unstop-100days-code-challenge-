@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define HASH_SIZE 500003  // A prime number close to the max constraints
+
+// Node structure for Hash Table
+typedef struct Node {
+    char name[105];
+    long long quantity;
+    struct Node* next;
+} Node;
+
+Node* hashTable[HASH_SIZE];
+
+// Hash function to convert string to an index
+unsigned int hash(const char* str) {
+    unsigned int h = 0;
+    while (*str) {
+        h = (h * 31) + *str;
+        str++;
+    }
+    return h % HASH_SIZE;
+}
+
+// Find a node or create a new one if it doesn't exist
+Node* getOrAdd(const char* name) {
+    unsigned int idx = hash(name);
+    Node* curr = hashTable[idx];
+    
+    while (curr != NULL) {
+        if (strcmp(curr->name, name) == 0) {
+            return curr;
+        }
+        curr = curr->next;
+    }
+    
+    // Node not found, create a new one
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    strcpy(newNode->name, name);
+    newNode->quantity = 0;
+    newNode->next = hashTable[idx];
+    hashTable[idx] = newNode;
+    
+    return newNode;
+}
+
+int main() {
+    // Optimize standard I/O operations for performance
+    setvbuf(stdout, NULL, _IOFBF, 16384);
+    
+    int q;
+    if (scanf("%d", &q) != 1) return 0;
+    
+    // Initialize hash table to NULL
+    memset(hashTable, 0, sizeof(hashTable));
+    
+    while (q--) {
+        int type;
+        char name[105];
+        long long requestedQty;
+        
+        scanf("%d %s %lld", &type, name, &requestedQty);
+        
+        Node* item = getOrAdd(name);
+        
+        if (type == 1) {
+            // Owner adds quantity
+            item->quantity += requestedQty;
+        } else if (type == 2) {
+            // Customer wants to buy
+            if (item->quantity >= requestedQty) {
+                printf("%lld\n", requestedQty);
+                item->quantity -= requestedQty;
+            } else {
+                printf("%lld\n", item->quantity);
+                item->quantity = 0; // All remaining stock sold
+            }
+        }
+    }
+    
+    return 0;
+}
