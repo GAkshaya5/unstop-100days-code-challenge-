@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+// Frequency array to store counts of each label up to 10^4
+int count[10001] = {0};
+
+int main() {
+    int total_boxes;
+    if (scanf("%d", &total_boxes) != 1) return 0;
+    
+    // Since total_boxes = 2 * n, then n = total_boxes / 2
+    int n = total_boxes / 2;
+    
+    for (int i = 0; i < total_boxes; i++) {
+        int label;
+        scanf("%d", &label);
+        
+        count[label]++;
+        
+        // If a label appears n times, it's the one Kritika is looking for
+        if (count[label] == n) {
+            printf("%d\n", label);
+            return 0; // Exit early since the answer is found
+        }
+    }
+    
+    return 0;
+}
