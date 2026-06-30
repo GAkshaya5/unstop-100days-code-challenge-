@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <string.h>
+
+int userLogic(char bob[], char alice[]) {
+    int i = 0;
+    int len_bob = 0;
+    int len_alice = 0;
+
+    for (i = 0; bob[i] != '\0'; i++) {
+        if (bob[i] == '#') {
+            if (len_bob > 0) len_bob--;
+        } else {
+            bob[len_bob++] = bob[i];
+        }
+    }
+    bob[len_bob] = '\0';
+
+    for (i = 0; alice[i] != '\0'; i++) {
+        if (alice[i] == '#') {
+            if (len_alice > 0) len_alice--;
+        } else {
+            alice[len_alice++] = alice[i];
+        }
+    }
+    alice[len_alice] = '\0';
+
+    return (strcmp(bob, alice) == 0) ? 1 : 0;
+}
+
+// Add this main function only if the platform demands a standalone execution setup
+int main() {
+    char bob[100005];
+    char alice[100005];
+    
+    if (scanf("%s", bob) == 1 && scanf("%s", alice) == 1) {
+        if (userLogic(bob, alice)) {
+            printf("YES\n");
+        } else {
+            printf("NO\n");
+        }
+    }
+    return 0;
+}
