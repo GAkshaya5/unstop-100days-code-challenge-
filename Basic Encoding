@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+#define MAX_VAL 100005
+
+long long freq[MAX_VAL];
+
+int main() {
+    int q;
+    if (scanf("%d", &q) != 1) return 0;
+    
+    // Reset frequency array
+    memset(freq, 0, sizeof(freq));
+    
+    // Read queries and accumulate frequencies
+    for (int i = 0; i < q; i++) {
+        long long a, b;
+        scanf("%lld %lld", &a, &b);
+        freq[b] += a;
+    }
+    
+    long long max_freq = -1;
+    long long min_freq = 1e18; // Large value representing infinity
+    
+    int distinct_count = 0;
+    
+    // Find the maximum and minimum frequencies among numbers that appeared
+    for (int i = 1; i < MAX_VAL; i++) {
+        if (freq[i] > 0) {
+            distinct_count++;
+            if (freq[i] > max_freq) {
+                max_freq = freq[i];
+            }
+            if (freq[i] < min_freq) {
+                min_freq = freq[i];
+            }
+        }
+    }
+    
+    // Edge case: If there are less than 2 distinct numbers, difference is 0
+    if (distinct_count <= 1) {
+        printf("0\n");
+        return 0;
+    }
+    
+    // If there are exactly two numbers with the same occurrence, output 0
+    if (distinct_count == 2 && max_freq == min_freq) {
+        printf("0\n");
+        return 0;
+    }
+    
+    // Find the largest number with max_freq
+    int max_num = -1;
+    for (int i = MAX_VAL - 1; i >= 1; i--) {
+        if (freq[i] == max_freq) {
+            max_num = i;
+            break;
+        }
+    }
+    
+    // Find the smallest number with min_freq
+    int min_num = -1;
+    for (int i = 1; i < MAX_VAL; i++) {
+        if (freq[i] == min_freq) {
+            min_num = i;
+            break;
+        }
+    }
+    
+    // Print the absolute difference
+    printf("%d\n", abs(max_num - min_num));
+    
+    return 0;
+}
