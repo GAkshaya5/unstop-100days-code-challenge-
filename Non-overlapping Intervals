@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_N 100005 // Based on constraints up to 10^5
+
+// Comparator function to sort intervals by their end times
+int compareIntervals(const void *a, const void *b) {
+    int endA = ((int*)a)[1];
+    int endB = ((int*)b)[1];
+    
+    if (endA < endB) return -1;
+    if (endA > endB) return 1;
+    return 0;
+}
+
+int eraseOverlapIntervals(int intervals[][2], int N) {
+    if (N <= 1) {
+        return 0;
+    }
+    
+    // Sort intervals by their end times
+    qsort(intervals, N, sizeof(intervals[0]), compareIntervals);
+    
+    int count = 0;
+    int end = intervals[0][1]; // End time of the first interval
+    
+    for (int i = 1; i < N; ++i) {
+        // If the current interval starts before the previous one ends, it overlaps
+        if (intervals[i][0] < end) {
+            count++;
+        } else {
+            // Otherwise, update the end time to the current interval's end time
+            end = intervals[i][1];
+        }
+    }
+    
+    return count;
+}
+
+int main() {
+    int N, M = 2;
+    // Reading input safely up to constraints dynamically if needed
+    if (scanf("%d %d", &N, &M) != 2) return 0;
+    
+    // Allocate dynamically or statically based on actual constraints
+    // Since constraints mention up to 10^5, static MAX_N 1000 in boilerplate needs expansion:
+    int (*intervals)[2] = malloc(sizeof(int[2]) * N);
+    
+    for (int i = 0; i < N; ++i) {
+        scanf("%d %d", &intervals[i][0], &intervals[i][1]);
+    }
+    
+    int result = eraseOverlapIntervals(intervals, N);
+    printf("%d\n", result);
+    
+    free(intervals);
+    return 0;
+}
