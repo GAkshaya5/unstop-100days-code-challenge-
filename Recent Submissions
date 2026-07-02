@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int n;
+    if (scanf("%d", &n) != 1) return 0;
+
+    int *arr = (int *)malloc(n * sizeof(int));
+    for (int i = 0; i < n; i++) {
+        if (scanf("%d", &arr[i]) != 1) {
+            free(arr);
+            return 0;
+        }
+    }
+
+    int max_size = 0;
+    int left = 0;
+
+    for (int right = 0; right < n; right++) {
+        // If the submission at 'left' is exactly 5000 seconds before the current submission
+        while (left < right && arr[right] - arr[left] > 5000) {
+            left++;
+        }
+        
+        if (left <= right && arr[right] - arr[left] == 5000) {
+            left++; // Remove the item that is exactly 5000 seconds before
+        }
+
+        // Calculate the current size of the queue
+        int current_size = right - left + 1;
+        if (current_size > max_size) {
+            max_size = current_size;
+        }
+    }
+
+    printf("%d\n", max_size);
+
+    free(arr);
+    return 0;
+}
