@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+// Comparator function for qsort
+int compare(const void *a, const void *b) {
+    return (*(int*)a - *(int*)b);
+}
+
+int main() {
+    int total_fruits;
+    if (scanf("%d", &total_fruits) != 1) return 0;
+    
+    int *fruits = (int*)malloc(total_fruits * sizeof(int));
+    for (int i = 0; i < total_fruits; i++) {
+        if (scanf("%d", &fruits[i]) != 1) return 0;
+    }
+    
+    // Sort the array in ascending order
+    qsort(fruits, total_fruits, sizeof(int), compare);
+    
+    long long max_sum = 0;
+    // Sum up every alternate element starting from index 0
+    for (int i = 0; i < total_fruits; i += 2) {
+        max_sum += fruits[i];
+    }
+    
+    printf("%lld\n", max_sum);
+    
+    free(fruits);
+    return 0;
+}
