@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int main() {
+    int n, k;
+    
+    // Read the length of the string and the value of k
+    if (scanf("%d %d", &n, &k) != 2) {
+        return 0;
+    }
+    
+    // Allocate memory dynamically to handle large constraints (n up to 10^6)
+    char *s = (char *)malloc((n + 1) * sizeof(char));
+    if (s == NULL) {
+        return 1; // Memory allocation failed
+    }
+    
+    // Read the string
+    scanf("%s", s);
+    
+    // Print the k-th character from the end (0-based index: n - k)
+    printf("%c\n", s[n - k]);
+    
+    // Free the allocated memory
+    free(s);
+    
+    return 0;
+}
