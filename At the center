@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+// Structure to store point coordinates and its squared distance from origin
+typedef struct {
+    int x;
+    int y;
+    long long dist;
+} Point;
+
+// Comparator function for qsort
+int compare(const void *a, const void *b) {
+    Point *p1 = (Point *)a;
+    Point *p2 = (Point *)b;
+    if (p1->dist < p2->dist) return -1;
+    if (p1->dist > p2->dist) return 1;
+    return 0;
+}
+
+int main() {
+    int n;
+    if (scanf("%d", &n) != 1) return 0;
+    
+    Point *points = (Point *)malloc(n * sizeof(Point));
+    
+    for (int i = 0; i < n; i++) {
+        scanf("%d %d", &points[i].x, &points[i].y);
+        // Using long long to avoid any potential overflow during squaring
+        points[i].dist = (long long)points[i].x * points[i].x + (long long)points[i].y * points[i].y;
+    }
+    
+    int k;
+    if (scanf("%d", &k) != 1) {
+        free(points);
+        return 0;
+    }
+    
+    // Sort points based on distance from origin
+    qsort(points, n, sizeof(Point), compare);
+    
+    // Print the K closest points
+    for (int i = 0; i < k; i++) {
+        printf("%d %d\n", points[i].x, points[i].y);
+    }
+    
+    free(points);
+    return 0;
+}
