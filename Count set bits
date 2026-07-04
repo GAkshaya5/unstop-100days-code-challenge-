@@ -1,0 +1,36 @@
+#include <stdio.h>
+
+// Function to calculate the total number of set bits from 1 to N
+int countOnesInBinary(int N) {
+    int count = 0;
+    int i = 0;
+    
+    // Loop through each bit position (1, 2, 4, 8, ...)
+    // Using long long for the shift prevents integer overflow when N is large
+    while (((long long)1 << i) <= N) {
+        long long r = (long long)1 << i;
+        
+        // Number of complete pairs of 0s and 1s blocks at bit position i
+        long long complete_pairs = (N + 1) / (2 * r);
+        count += complete_pairs * r;
+        
+        // Remaining elements that don't fit into a complete pair
+        long long remainder = (N + 1) % (2 * r);
+        if (remainder > r) {
+            count += (remainder - r);
+        }
+        
+        i++;
+    }
+    
+    return count;
+}
+
+int main() {
+    int N;
+    if (scanf("%d", &N) == 1) {
+        int result = countOnesInBinary(N);
+        printf("%d\n", result);
+    }
+    return 0;
+}
