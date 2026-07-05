@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+long long calculate_golden_value(int arr[], int n) {
+    long long SE = 0;
+    long long SO = 0;
+
+    // Increased bit range to 30 to support array elements up to 10^9
+    for (int b = 0; b <= 30; b++) {
+        long long E0 = 1, E1 = 0; // P[0] = 0, which is at an even index (0)
+        long long O0 = 0, O1 = 0;
+        int current_prefix_bit = 0;
+
+        for (int i = 0; i < n; i++) {
+            int bit = (arr[i] >> b) & 1;
+            current_prefix_bit ^= bit;
+            
+            int k = i + 1; // index in prefix array
+            if (k % 2 == 0) {
+                if (current_prefix_bit == 0) E0++;
+                else E1++;
+            } else {
+                if (current_prefix_bit == 0) O0++;
+                else O1++;
+            }
+        }
+
+        // An even-length subarray is formed by choosing two indices of the same parity
+        long long count_even = (E0 * E1) + (O0 * O1);
+        
+        // An odd-length subarray is formed by choosing two indices of different parity
+        long long count_odd = (E0 * O1) + (E1 * O0);
+
+        // Accumulate the contribution of this bit to SE and SO
+        SE += count_even * (1LL << b);
+        SO += count_odd * (1LL << b);
+    }
+
+    // Return the absolute difference |SE - SO|
+    return llabs(SE - SO);
+}
+
+int main() {
+    int n;
+    if (scanf("%d", &n) != 1) return 0;
+
+    int *arr = (int *)malloc(n * sizeof(int));
+    for (int i = 0; i < n; i++) {
+        if (scanf("%d", &arr[i]) != 1) return 0;
+    }
+
+    long long result = calculate_golden_value(arr, n);
+    printf("%lld\n", result);
+
+    free(arr);
+    return 0;
+}
