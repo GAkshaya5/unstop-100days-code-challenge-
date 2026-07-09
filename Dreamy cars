@@ -1,0 +1,34 @@
+#include <stdio.h>
+
+// Function to calculate the final blend score
+int calculate_f_score(int features[], int N) {
+    int total_xor = 0;
+    
+    for (int i = 0; i < N; i++) {
+        // Count how many subarrays contain the element features[i]
+        // Using long long to prevent integer overflow during multiplication
+        long long count = (long long)(i + 1) * (N - i);
+        
+        // If the frequency of appearance is odd, include it in the final XOR sum
+        if (count % 2 != 0) {
+            total_xor ^= features[i];
+        }
+    }
+    
+    return total_xor;
+}
+
+int main() {
+    int N;
+    if (scanf("%d", &N) != 1) return 0;
+    
+    int features[N];
+    for (int i = 0; i < N; i++) {
+        if (scanf("%d", &features[i]) != 1) return 0;
+    }
+    
+    int result = calculate_f_score(features, N);
+    printf("%d\n", result);
+    
+    return 0;
+}
