@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+// Comparator function to sort in descending order
+int compare(const void *a, const void *b) {
+    return (*(int*)b - *(int*)a);
+}
+
+int main() {
+    int n;
+    if (scanf("%d", &n) != 1) return 0;
+    
+    int *votes = (int*)malloc(n * sizeof(int));
+    long long total_sum = 0;
+    
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &votes[i]);
+        total_sum += votes[i];
+    }
+    
+    // Sort votes in non-increasing (descending) order
+    qsort(votes, n, sizeof(int), compare);
+    
+    long long current_sum = 0;
+    int count = 0;
+    
+    // Find the minimum number of elements required to exceed half of total_sum
+    for (int i = 0; i < n; i++) {
+        current_sum += votes[i];
+        count++;
+        if (current_sum > total_sum / 2) {
+            break;
+        }
+    }
+    
+    // Print the chosen subset elements
+    for (int i = 0; i < count; i++) {
+        printf("%d", votes[i]);
+        if (i < count - 1) {
+            printf(" ");
+        }
+    }
+    printf("\n");
+    
+    free(votes);
+    return 0;
+}
