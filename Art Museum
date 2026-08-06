@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Comparison function for qsort
+int compare(const void *a, const void *b) {
+    return (*(int*)a - *(int*)b);
+}
+
+void user_logic(int n, int positions[][2]) {
+    int x[n];
+    int y[n];
+    
+    for (int i = 0; i < n; i++) {
+        x[i] = positions[i][0];
+        y[i] = positions[i][1];
+    }
+    
+    // Sort x and y coordinates independently
+    qsort(x, n, sizeof(int), compare);
+    qsort(y, n, sizeof(int), compare);
+    
+    long long choices_x = 1;
+    long long choices_y = 1;
+    
+    if (n % 2 == 0) {
+        choices_x = (long long)x[n / 2] - x[n / 2 - 1] + 1;
+        choices_y = (long long)y[n / 2] - y[n / 2 - 1] + 1;
+    } else {
+        choices_x = 1;
+        choices_y = 1;
+    }
+    
+    long long total_positions = choices_x * choices_y;
+    printf("%lld\n", total_positions);
+}
+int main() {
+    int n;
+    scanf("%d", &n);
+    int positions[n][2];
+    for(int i = 0; i < n; i++) {
+        scanf("%d %d", &positions[i][0], &positions[i][1]);
+    }
+    
+    // Call user logic function and print the output
+    user_logic(n, positions);
+    return 0;
+}
