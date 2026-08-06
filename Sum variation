@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int calculate_sum(int nums[], int n) {
+    // The smallest missing positive integer must lie in the range [1, n + 1].
+    // Allocate a presence array of size n + 2 initialized to 0.
+    char *present = (char *)calloc(n + 2, sizeof(char));
+    if (!present) return 0;
+    
+    long long sum = 0;
+    for (int i = 0; i < n; i++) {
+        sum += nums[i];
+        if (nums[i] > 0 && nums[i] <= n) {
+            present[nums[i]] = 1;
+        }
+    }
+    
+    // Find the first index from 1 to n that is not marked as present
+    int missing = n + 1;
+    for (int i = 1; i <= n; i++) {
+        if (!present[i]) {
+            missing = i;
+            break;
+        }
+    }
+    
+    free(present);
+    
+    // Find the first digit of the missing number
+    int first_digit = missing;
+    while (first_digit >= 10) {
+        first_digit /= 10;
+    }
+    
+    // Get the ASCII value of the first digit character
+    int ascii_val = '0' + first_digit;
+    
+    // Return the final computed sum
+    return (int)(sum + ascii_val);
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    int nums[n];
+    for (int i = 0; i < n; ++i) {
+        scanf("%d", &nums[i]);
+    }
+    int result = calculate_sum(nums, n);
+    printf("%d\n", result);
+    return 0;
+}
